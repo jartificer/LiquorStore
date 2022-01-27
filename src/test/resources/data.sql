@@ -1,0 +1,1 @@
+INSERT INTO Liquor (id, name, producer, abv, stock) values (3, 'liquor3', 'producer1', 5.5, 60)
