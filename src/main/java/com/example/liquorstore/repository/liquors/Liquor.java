@@ -39,7 +39,7 @@ public class Liquor {
     return producer;
   }
 
-  public void setProducer(String name) {
+  public void setProducer(String producer) {
     this.producer = producer;
   }
 
@@ -47,7 +47,7 @@ public class Liquor {
     return abv;
   }
 
-  public void setAbv() {
+  public void setAbv(Float abv) {
     this.abv = abv;
   }
 

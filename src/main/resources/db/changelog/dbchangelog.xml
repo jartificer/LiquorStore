@@ -8,14 +8,34 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
 http://www.liquibase.org/xml/ns/pro
 http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
     <changeSet  id="1"  author="bob">
-        <createTable  tableName="department">
+        <createSequence  cacheSize="371717"
+                         catalogName="cat"
+                         cycle="true"
+                         dataType="int"
+                         incrementBy="1"
+                         maxValue="1000000"
+                         minValue="1"
+                         schemaName="public"
+                         sequenceName="hibernate_sequence"
+                         startValue="1"/>
+        <createTable tableName="liquor">
             <column  name="id"  type="int">
                 <constraints  primaryKey="true"  nullable="false"/>
             </column>
             <column  name="name"  type="varchar(50)">
                 <constraints  nullable="false"/>
             </column>
-            <column  name="active"  type="boolean"  defaultValueBoolean="true"/>
+
+            <column  name="producer"  type="varchar(50)">
+                <constraints  nullable="false"/>
+            </column>
+            <column  name="abv"  type="float(50)">
+                <constraints  nullable="false"/>
+            </column>
+            <column  name="stock"  type="int">
+                <constraints  nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
+
 </databaseChangeLog>

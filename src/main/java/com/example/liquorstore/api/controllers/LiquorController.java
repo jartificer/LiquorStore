@@ -1,22 +1,19 @@
 package com.example.liquorstore.api.controllers;
 
 import com.example.liquorstore.model.LiquorDto;
-import com.example.liquorstore.repository.LiquorStore;
+import com.example.liquorstore.repository.liquors.Liquor;
+import com.example.liquorstore.service.LiquorService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/liquors")
 @Slf4j
 public class LiquorController {
 
-   @GetMapping("/hello")
-
+  @GetMapping("/hello")
   public String greetBuyer() {
     log.trace("A TRACE Message");
     log.debug("A DEBUG Message");
@@ -26,61 +23,40 @@ public class LiquorController {
     return "Greetings!";
   }
 
-  @GetMapping("/get")
-  public ResponseEntity<List<LiquorDto>> getAvailableLiquors() {
-    return ResponseEntity.ok(LiquorStore.available);
+//  @GetMapping
+//  public List<LiquorDto> getAllLiquors() {
+//      return liquorService.getAllLiquors();
+//  }
+  // cu model mapper
+
+  @Autowired
+  private LiquorService liquorService;
+
+  @PostMapping(consumes = {"application/json"})
+  public void createLiquor(@RequestBody LiquorDto newLiquorDto) {
+    LiquorDto liquorDto = liquorService.save(newLiquorDto);
+    //tot cu model mapper
   }
 
-  @PostMapping
-  public @ResponseBody ResponseEntity<String> post() {
-    return new ResponseEntity<String>("POST Response", HttpStatus.OK);
+  @GetMapping("/{id}")
+  public LiquorDto findLiquorById(@PathVariable("id") int liquorId) {
+    return liquorService.findById(liquorId);
+    // cu model mapper
   }
 
-//  @PostMapping
-//  
-//    public ResponseEntity<LiquorDTO> addLiquor(@RequestBody LiquorDTO liquor)
-//    {
-//      if (liquor == null && liquor.getName() == null && liquor.getProducer() == null)
-//      {
-//        return ResponseEntity.badRequest().body(liquor);
-//      }
-//      LiquorStore.available.add(liquor);
+
+//    //controller = layer de prezentare, interfata cu exteriorul
+//    // Dto - delegare la service
+//    // atentie la separation of concerns
+//    // service il salveaza in baza de date
 //
-//      return ResponseEntity.ok(liquor);
-//    }
-//
-//    @PutMapping("/{name}")
-//    
-//    public void updateLiquor(@PathVariable(name = "name") String name, @RequestBody LiquorDTO updatedLiquor)
-//    {
-//
-//      List<LiquorDTO> available = LiquorStore.available;
-//      for (int i = 0; i < available.size(); i++)
-//      {
-//        LiquorDTO liquor = available.get(i);
-//        if (liquor.getName().equals(name))
-//        {
-//          available.remove(i);
-//          available.add(updatedLiquor);
-//          break;
-//        }
-//      }
-//    }
-//
-//    @DeleteMapping("/{name}")
-//    public void deleteLiquor(@PathVariable(name = "name") String name)
-//    {
-//      List<LiquorDTO> available = LiquorStore.available;
-//      for (int i = 0; i < available.size(); i++)
-//      {
-//        LiquorDTO liquor = available.get(i);
-//        if (liquor.getName().equals(name))
-//        {
-//          available.remove(i);
-//          break;
-//        }
-//      }
+//    //LiquorStore.available.add(liquor);
+//    return ResponseEntity.ok(liquor);
 //  }
 
+//  @PostMapping("/")
+//  public @ResponseBody ResponseEntity<String> post() {
+//    return new ResponseEntity<String>("POST Response", HttpStatus.OK);
+//  }
 
 }

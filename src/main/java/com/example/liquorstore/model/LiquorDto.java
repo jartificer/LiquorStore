@@ -1,6 +1,8 @@
 package com.example.liquorstore.model;
 
+
 public class LiquorDto {
+//  public Integer getStock;
   protected Integer id;
   protected String name;
   protected String producer;
@@ -37,7 +39,7 @@ public class LiquorDto {
     return producer;
   }
 
-  public void setProducer(String name) {
+  public void setProducer(String producer) {
     this.producer = producer;
   }
 
@@ -45,7 +47,7 @@ public class LiquorDto {
     return abv;
   }
 
-  public void setAbv() {
+  public void setAbv(Float abv) {
     this.abv = abv;
   }
 
