@@ -6,19 +6,20 @@ import com.example.liquorstore.repository.liquors.LiquorRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class LiquorService {
   private final LiquorRepository liquorRepository;
 
-  //  public List<LiquorDto> getAllLiquors(){
-  //    return liquorRepository.findAll();
-  // de folosit model mapper
-  //  }
 
   public LiquorService(LiquorRepository liquorRepository) {
     this.liquorRepository = liquorRepository;
+  }
+
+  public List<Liquor> findAll() {
+    return liquorRepository.findAll();
   }
 
   public LiquorDto save(LiquorDto liquorDto) {
@@ -33,4 +34,6 @@ public class LiquorService {
     ModelMapper modelMapper = new ModelMapper();
     return modelMapper.map(liquor.orElseThrow(() -> new RuntimeException("liquor not found")), LiquorDto.class);
   }
+
+
 }

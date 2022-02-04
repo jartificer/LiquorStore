@@ -5,8 +5,9 @@ import com.example.liquorstore.repository.liquors.Liquor;
 import com.example.liquorstore.service.LiquorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/liquors")
@@ -23,36 +24,24 @@ public class LiquorController {
     return "Greetings!";
   }
 
-//  @GetMapping
-//  public List<LiquorDto> getAllLiquors() {
-//      return liquorService.getAllLiquors();
-//  }
-  // cu model mapper
-
   @Autowired
   private LiquorService liquorService;
+
+  @GetMapping("/")
+  public List<Liquor> getAllLiquors() {
+    return liquorService.findAll();
+  }
 
   @PostMapping(consumes = {"application/json"})
   public void createLiquor(@RequestBody LiquorDto newLiquorDto) {
     LiquorDto liquorDto = liquorService.save(newLiquorDto);
-    //tot cu model mapper
   }
 
   @GetMapping("/{id}")
   public LiquorDto findLiquorById(@PathVariable("id") int liquorId) {
     return liquorService.findById(liquorId);
-    // cu model mapper
   }
 
-
-//    //controller = layer de prezentare, interfata cu exteriorul
-//    // Dto - delegare la service
-//    // atentie la separation of concerns
-//    // service il salveaza in baza de date
-//
-//    //LiquorStore.available.add(liquor);
-//    return ResponseEntity.ok(liquor);
-//  }
 
 //  @PostMapping("/")
 //  public @ResponseBody ResponseEntity<String> post() {

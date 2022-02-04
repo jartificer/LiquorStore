@@ -2,7 +2,6 @@ package com.example.liquorstore.model;
 
 
 public class LiquorDto {
-//  public Integer getStock;
   protected Integer id;
   protected String name;
   protected String producer;
