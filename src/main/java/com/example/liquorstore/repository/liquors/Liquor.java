@@ -17,8 +17,6 @@ public class Liquor {
   private Float abv;
   private Integer stock;
 
-  public Liquor() {}
-
   public Integer getId() {
     return id;
   }

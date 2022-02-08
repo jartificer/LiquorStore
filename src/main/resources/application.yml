@@ -13,7 +13,7 @@ spring:
   datasource:
     platform: postgres
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://172.25.183.156:5432/postgres
+    url: jdbc:postgresql://172.25.177.218:5432/postgres
     username: postgres
     password: mysecretpassword
   jpa:

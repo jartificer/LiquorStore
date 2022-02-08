@@ -8,15 +8,6 @@ public class LiquorDto {
   protected Float abv;
   protected Integer stock;
 
-  public LiquorDto() {}
-
-  public LiquorDto(Integer id, String name, String producer, Float abv, Integer stock) {
-    this.id = id;
-    this.name = name;
-    this.producer = producer;
-    this.abv = abv;
-    this.stock = stock;
-  }
 
   public Integer getId() {
     return id;

@@ -1,7 +1,6 @@
 package com.example.liquorstore.api.controllers;
 
 import com.example.liquorstore.model.LiquorDto;
-import com.example.liquorstore.repository.liquors.Liquor;
 import com.example.liquorstore.service.LiquorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,38 +13,31 @@ import java.util.List;
 @Slf4j
 public class LiquorController {
 
-  @GetMapping("/hello")
-  public String greetBuyer() {
-    log.trace("A TRACE Message");
-    log.debug("A DEBUG Message");
-    log.info("An INFO Message");
-    log.warn("A WARN Message");
-    log.error("An ERROR Message");
-    return "Greetings!";
-  }
+  private final LiquorService liquorService;
 
   @Autowired
-  private LiquorService liquorService;
-
-  @GetMapping("/")
-  public List<Liquor> getAllLiquors() {
-    return liquorService.findAll();
+  public LiquorController(LiquorService liquorService) {
+    this.liquorService = liquorService;
   }
 
-  @PostMapping(consumes = {"application/json"})
+
+  @GetMapping
+  public List<LiquorDto> getAllLiquors(LiquorDto newLiquorDto) {
+    return liquorService.findAll(newLiquorDto);
+  }
+
+  @PostMapping
   public void createLiquor(@RequestBody LiquorDto newLiquorDto) {
     LiquorDto liquorDto = liquorService.save(newLiquorDto);
   }
 
-  @GetMapping("/{id}")
+  @GetMapping("{id}")
   public LiquorDto findLiquorById(@PathVariable("id") int liquorId) {
     return liquorService.findById(liquorId);
   }
 
-
-//  @PostMapping("/")
-//  public @ResponseBody ResponseEntity<String> post() {
-//    return new ResponseEntity<String>("POST Response", HttpStatus.OK);
-//  }
-
+  @DeleteMapping("{id}")
+  public void deleteLiquorById(@PathVariable("id") int liquorId) {
+    liquorService.deleteById(liquorId);
+  }
 }
