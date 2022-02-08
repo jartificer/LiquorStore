@@ -6,15 +6,11 @@ import com.example.liquorstore.repository.liquors.LiquorRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
-
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-
-
 
 @Service
 public class LiquorService {
@@ -35,17 +31,22 @@ public class LiquorService {
 
   public LiquorDto save(LiquorDto liquorDto) {
     Liquor newLiquor = modelMapper.map(liquorDto, Liquor.class);
-    liquorRepository.save(newLiquor);
-    return liquorDto;
+    Liquor savedLiquor = liquorRepository.save(newLiquor);
+    return modelMapper.map(savedLiquor, LiquorDto.class);
   }
 
   public LiquorDto findById(int id) {
     Optional<Liquor> liquor = liquorRepository.findById(id);
     return modelMapper.map(
-        liquor.orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "liquor not found")), LiquorDto.class);
+        liquor.orElseThrow(() -> new ResourceNotFoundException("liquor not found")),
+        LiquorDto.class);
   }
 
-  public void deleteById(int id) {
-    liquorRepository.deleteById(id);
+  public void deleteById(int id) throws ResourceNotFoundException {
+    try {
+      liquorRepository.deleteById(id);
+    } catch (EmptyResultDataAccessException e) {
+      throw new ResourceNotFoundException();
+    }
   }
 }

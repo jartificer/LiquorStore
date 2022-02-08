@@ -4,8 +4,11 @@ import com.example.liquorstore.model.LiquorDto;
 import com.example.liquorstore.service.LiquorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -20,15 +23,15 @@ public class LiquorController {
     this.liquorService = liquorService;
   }
 
-
   @GetMapping
   public List<LiquorDto> getAllLiquors(LiquorDto newLiquorDto) {
     return liquorService.findAll(newLiquorDto);
   }
 
   @PostMapping
-  public void createLiquor(@RequestBody LiquorDto newLiquorDto) {
+  public ResponseEntity<Object> createLiquor(@RequestBody LiquorDto newLiquorDto) {
     LiquorDto liquorDto = liquorService.save(newLiquorDto);
+    return ResponseEntity.created(URI.create("/api/v1/liquors/" + liquorDto.getId())).build();
   }
 
   @GetMapping("{id}")
@@ -37,6 +40,7 @@ public class LiquorController {
   }
 
   @DeleteMapping("{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteLiquorById(@PathVariable("id") int liquorId) {
     liquorService.deleteById(liquorId);
   }
