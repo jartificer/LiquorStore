@@ -1,19 +1,17 @@
 package com.example.liquorstore.api.controllers;
 
 import com.example.liquorstore.model.LiquorDto;
+import com.example.liquorstore.model.PageDto;
 import com.example.liquorstore.service.LiquorService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/liquors")
-@Slf4j
 public class LiquorController {
 
   private final LiquorService liquorService;
@@ -21,11 +19,6 @@ public class LiquorController {
   @Autowired
   public LiquorController(LiquorService liquorService) {
     this.liquorService = liquorService;
-  }
-
-  @GetMapping
-  public List<LiquorDto> getAllLiquors(LiquorDto newLiquorDto) {
-    return liquorService.findAll(newLiquorDto);
   }
 
   @PostMapping
@@ -43,5 +36,13 @@ public class LiquorController {
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteLiquorById(@PathVariable("id") int liquorId) {
     liquorService.deleteById(liquorId);
+  }
+
+  @GetMapping
+  public PageDto<LiquorDto> getAllLiquors(
+      @RequestParam(value = "page", defaultValue = "0") Integer page,
+      @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+      @RequestParam(value = "sortBy", defaultValue = "id") String sortBy) {
+    return liquorService.getAllLiquors(page, pageSize, sortBy);
   }
 }

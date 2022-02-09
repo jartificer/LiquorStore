@@ -1,11 +1,16 @@
 package com.example.liquorstore.repository.liquors;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
+@Setter
+@Getter
 public class Liquor {
 
   @Id
@@ -16,47 +21,5 @@ public class Liquor {
   private String producer;
   private Float abv;
   private Integer stock;
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getProducer() {
-    return producer;
-  }
-
-  public void setProducer(String producer) {
-    this.producer = producer;
-  }
-
-  public Float getAbv() {
-    return abv;
-  }
-
-  public void setAbv(Float abv) {
-    this.abv = abv;
-  }
-
-  public Integer getStock() {
-    return stock;
-  }
-
-  public void setStock(Integer stock) {
-    this.stock = stock;
-  }
-
-
 
 }
