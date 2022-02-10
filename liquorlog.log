@@ -1,26 +1,30 @@
-2022-02-10 11:14:37 INFO  Starting LiquorStoreApplicationTests using Java 11.0.13 on NB-CJ-U2-5726 with PID 21468 (started by radu.mailat in C:\code\LiquorStore)
-2022-02-10 11:14:37 DEBUG Running with Spring Boot v2.6.2, Spring v5.3.14
-2022-02-10 11:14:37 INFO  The following profiles are active: test
-2022-02-10 11:14:38 INFO  Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2022-02-10 11:14:38 INFO  Finished Spring Data repository scanning in 35 ms. Found 1 JPA repository interfaces.
-2022-02-10 11:14:38 INFO  HikariPool-1 - Starting...
-2022-02-10 11:14:39 INFO  HikariPool-1 - Start completed.
-2022-02-10 11:14:39 INFO  HHH000204: Processing PersistenceUnitInfo [name: default]
-2022-02-10 11:14:39 INFO  HHH000412: Hibernate ORM core version 5.6.3.Final
-2022-02-10 11:14:39 INFO  HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
-2022-02-10 11:14:39 INFO  HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL95Dialect
-2022-02-10 11:14:40 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2022-02-10 11:14:40 INFO  Initialized JPA EntityManagerFactory for persistence unit 'default'
-2022-02-10 11:14:40 WARN  spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2022-02-10 11:14:41 INFO  H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:mydb'
-2022-02-10 11:14:41 INFO  Started LiquorStoreApplicationTests in 3.671 seconds (JVM running for 4.538)
-2022-02-10 11:14:41 INFO  Closing JPA EntityManagerFactory for persistence unit 'default'
-2022-02-10 11:14:41 INFO  HHH000477: Starting delayed evictData of schema as part of SessionFactory shut-down'
-2022-02-10 11:14:41 WARN  SQL Error: 90121, SQLState: 90121
-2022-02-10 11:14:41 ERROR Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-200]
-2022-02-10 11:14:41 WARN  SQL Error: 90121, SQLState: 90121
-2022-02-10 11:14:41 ERROR Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-200]
-2022-02-10 11:14:41 WARN  Invocation of destroy method failed on bean wi2022-02-10 11:18:52 INFO  Closing JPA EntityManagerFactory for persistence unit 'default'
-2022-02-10 11:18:52 INFO  HikariPool-1 - Shutdown initiated...
-2022-02-10 11:18:52 INFO  HikariPool-1 - Shutdown completed.
-14:41 INFO  HikariPool-1 - Shutdown completed.
+2022-02-10 17:32:44 INFO  Starting LiquorStoreApplication using Java 11.0.13 on NB-CJ-U2-5726 with PID 15036 (C:\code\LiquorStore\target\classes started by radu.mailat in C:\code\LiquorStore)
+2022-02-10 17:32:45 DEBUG Running with Spring Boot v2.6.2, Spring v5.3.14
+2022-02-10 17:32:45 INFO  No active profile set, falling back to default profiles: default
+2022-02-10 17:32:45 INFO  Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-02-10 17:32:45 INFO  Finished Spring Data repository scanning in 48 ms. Found 1 JPA repository interfaces.
+2022-02-10 17:32:46 INFO  Tomcat initialized with port(s): 8080 (http)
+2022-02-10 17:32:46 INFO  Initializing ProtocolHandler ["http-nio-8080"]
+2022-02-10 17:32:46 INFO  Starting service [Tomcat]
+2022-02-10 17:32:46 INFO  Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-02-10 17:32:46 INFO  Initializing Spring embedded WebApplicationContext
+2022-02-10 17:32:46 INFO  Root WebApplicationContext: initialization completed in 1499 ms
+2022-02-10 17:32:46 INFO  HikariPool-1 - Starting...
+2022-02-10 17:32:46 INFO  HikariPool-1 - Start completed.
+2022-02-10 17:32:47 INFO  Successfully acquired change log lock
+2022-02-10 17:32:47 INFO  Reading from public.databasechangelog
+2022-02-10 17:32:47 INFO  Successfully released change log lock
+2022-02-10 17:32:47 INFO  HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-02-10 17:32:47 INFO  HHH000412: Hibernate ORM core version 5.6.3.Final
+2022-02-10 17:32:47 INFO  HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-02-10 17:32:47 INFO  HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL95Dialect
+2022-02-10 17:32:48 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-02-10 17:32:48 INFO  Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-02-10 17:32:48 WARN  spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-02-10 17:32:49 INFO  Starting ProtocolHandler ["http-nio-8080"]
+2022-02-10 17:32:49 INFO  Tomcat started on port(s): 8080 (http) with context path ''
+2022-02-10 17:32:49 INFO  Started LiquorStoreApplication in 5.14 seconds (JVM running for 5.644)
+2022-02-10 17:32:57 INFO  Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-02-10 17:32:57 INFO  Initializing Servlet 'dispatcherServlet'
+2022-02-10 17:32:57 INFO  Completed initialization in 0 ms
+2022-02-10 17:32:57 INFO  Init duration for springdoc-openapi is: 295 ms

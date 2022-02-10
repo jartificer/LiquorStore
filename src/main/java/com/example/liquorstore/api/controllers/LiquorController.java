@@ -45,4 +45,10 @@ public class LiquorController {
       @RequestParam(value = "sortBy", defaultValue = "id") String sortBy) {
     return liquorService.getAllLiquors(page, pageSize, sortBy);
   }
+
+  @PutMapping()
+  public ResponseEntity<Object> updateLiquor(@RequestBody LiquorDto newLiquorDto) {
+    LiquorDto liquorDto = liquorService.update(newLiquorDto);
+    return ResponseEntity.ok().build();
+  }
 }
