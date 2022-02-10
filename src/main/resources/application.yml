@@ -1,15 +1,9 @@
 spring:
-  profiles:
-    active: dev
-
----
-spring:
-  config:
-    activate:
-      on-profile: dev
   liquibase:
     change-log: classpath:/db/changelog/dbchangelog.xml
     enabled: true
+    drop-first: false
+    default-schema: public
   datasource:
     platform: postgres
     driverClassName: org.postgresql.Driver
@@ -19,27 +13,5 @@ spring:
   jpa:
     database: POSTGRESQL
     show-sql: true
----
-spring:
-  config:
-    activate:
-      on-profile:
-       test
-  datasource:
-    platform: h2
-    url: jdbc:h2:mem:mydb
-    username: sa
-    password:
-    driverClassName: org.h2.Driver
-  jpa:
-    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
-  h2:
-    console.enabled: true
-
----
-
-logging:
-  file:
-    name: liquorlog1.log
 
 
