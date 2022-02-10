@@ -10,4 +10,5 @@ class LiquorStoreApplicationTests {
 	void contextLoads() {
 	}
 
+
 }

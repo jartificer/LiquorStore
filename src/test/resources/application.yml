@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: test
 
 ---
 spring:
@@ -10,8 +10,6 @@ spring:
   liquibase:
     change-log: classpath:/db/changelog/dbchangelog.xml
     enabled: true
-    drop-first: false
-    default-schema: public
   datasource:
     platform: postgres
     driverClassName: org.postgresql.Driver
@@ -25,8 +23,9 @@ spring:
 spring:
   config:
     activate:
-      on-profile:
-       test
+      on-profile: test
+  liquibase:
+    enabled: false
   datasource:
     platform: h2
     url: jdbc:h2:mem:mydb
