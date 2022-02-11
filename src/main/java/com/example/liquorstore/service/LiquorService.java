@@ -38,17 +38,6 @@ public class LiquorService {
     Liquor newLiquor = modelMapper.map(newLiquorDto, Liquor.class);
     newLiquor = liquorRepository.save(newLiquor);
     return modelMapper.map(newLiquor, LiquorDto.class);
-
-
-
-//    modelMapper.map(liquorDto, Liquor.class);
-
-//    liquorDto.setName(newLiquorDto.getName());
-//    liquorDto.setProducer(newLiquorDto.getProducer());
-//    liquorDto.setAbv(newLiquorDto.getAbv());
-//    liquorDto.setStock(newLiquorDto.getStock());
-//    return save(liquorDto);
-
   }
 
   public LiquorDto findById(int id) {
