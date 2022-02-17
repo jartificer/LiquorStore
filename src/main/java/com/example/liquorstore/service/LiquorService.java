@@ -13,49 +13,21 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
-import java.util.Optional;
-
-
-
 
 @Service
 public class LiquorService {
   private final LiquorRepository liquorRepository;
   private final ModelMapper modelMapper;
+  private final ModelMapper modelMapperSkipNull;
 
   @Autowired
-  public LiquorService(LiquorRepository liquorRepository, ModelMapper modelMapper) {
+  public LiquorService(
+      LiquorRepository liquorRepository, ModelMapper modelMapper, ModelMapper modelMapperSkipNull) {
     this.liquorRepository = liquorRepository;
     this.modelMapper = modelMapper;
-  }
-
-  public LiquorDto save(LiquorDto liquorDto) {
-    Liquor newLiquor = modelMapper.map(liquorDto, Liquor.class);
-    Liquor savedLiquor = liquorRepository.save(newLiquor);
-    return modelMapper.map(savedLiquor, LiquorDto.class);
-  }
-
-  public LiquorDto update(LiquorDto newLiquorDto) {
-
-    Liquor newLiquor = modelMapper.map(newLiquorDto, Liquor.class);
-    newLiquor = liquorRepository.save(newLiquor);
-    return modelMapper.map(newLiquor, LiquorDto.class);
-  }
-
-  public LiquorDto findById(int id) {
-    Optional<Liquor> liquor = liquorRepository.findById(id);
-    return modelMapper.map(
-        liquor.orElseThrow(() -> new ResourceNotFoundException("liquor not found")),
-        LiquorDto.class);
-  }
-
-  public void deleteById(int id) throws ResourceNotFoundException {
-    try {
-      liquorRepository.deleteById(id);
-    } catch (EmptyResultDataAccessException e) {
-      throw new ResourceNotFoundException("liquor not found");
-    }
+    this.modelMapperSkipNull = modelMapperSkipNull;
   }
 
   public PageDto<LiquorDto> getAllLiquors(Integer page, Integer pageSize, String sortBy) {
@@ -71,5 +43,44 @@ public class LiquorService {
     liquorPage.setData(result);
 
     return liquorPage;
+  }
+
+  public LiquorDto create(LiquorDto liquorDto) {
+    Liquor newLiquor = modelMapper.map(liquorDto, Liquor.class);
+    Liquor savedLiquor = liquorRepository.save(newLiquor);
+    return modelMapper.map(savedLiquor, LiquorDto.class);
+  }
+
+  public LiquorDto findById(int id) {
+    Liquor liquor = findByIdOrThrow(id);
+    return modelMapper.map(liquor, LiquorDto.class);
+  }
+
+  public void update(int id, LiquorDto newLiquorDto) {
+    newLiquorDto.setId(id);
+    Liquor liquor = findByIdOrThrow(id);
+    modelMapper.map(newLiquorDto, liquor);
+    liquorRepository.save(liquor);
+  }
+
+  public void partialUpdate(int id, LiquorDto newLiquorDto) {
+    newLiquorDto.setId(id);
+    Liquor liquor = findByIdOrThrow(id);
+    modelMapperSkipNull.map(newLiquorDto, liquor);
+    liquorRepository.save(liquor);
+  }
+
+  public void deleteById(int id) throws ResourceNotFoundException {
+    try {
+      liquorRepository.deleteById(id);
+    } catch (EmptyResultDataAccessException e) {
+      throw new ResourceNotFoundException("liquor not found");
+    }
+  }
+
+  private Liquor findByIdOrThrow(int id) {
+    return liquorRepository
+        .findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("liquor not found"));
   }
 }

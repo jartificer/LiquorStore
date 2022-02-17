@@ -7,11 +7,13 @@ spring:
   datasource:
     platform: postgres
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://172.23.109.251:5432/postgres
+    url: jdbc:postgresql://172.30.133.162:5432/postgres
     username: postgres
     password: mysecretpassword
   jpa:
     database: POSTGRESQL
     show-sql: true
+    hibernate:
+      ddl-auto: validate
 
 

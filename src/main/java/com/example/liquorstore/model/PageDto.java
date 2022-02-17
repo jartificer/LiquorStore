@@ -9,10 +9,7 @@ import java.util.List;
 @Setter
 public class PageDto<T> {
 
-    private Integer page;
-    private Integer pageSize;
-    private List<T> data;
-
-
-
+  private Integer page;
+  private Integer pageSize;
+  private List<T> data;
 }

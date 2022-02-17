@@ -21,5 +21,4 @@ public class Liquor {
   private String producer;
   private Float abv;
   private Integer stock;
-
 }

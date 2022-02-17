@@ -21,21 +21,9 @@ public class LiquorController {
     this.liquorService = liquorService;
   }
 
-  @PostMapping
-  public ResponseEntity<Object> createLiquor(@RequestBody LiquorDto newLiquorDto) {
-    LiquorDto liquorDto = liquorService.save(newLiquorDto);
-    return ResponseEntity.created(URI.create("/api/v1/liquors/" + liquorDto.getId())).build();
-  }
-
   @GetMapping("{id}")
   public LiquorDto findLiquorById(@PathVariable("id") int liquorId) {
     return liquorService.findById(liquorId);
-  }
-
-  @DeleteMapping("{id}")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteLiquorById(@PathVariable("id") int liquorId) {
-    liquorService.deleteById(liquorId);
   }
 
   @GetMapping
@@ -46,9 +34,29 @@ public class LiquorController {
     return liquorService.getAllLiquors(page, pageSize, sortBy);
   }
 
-  @PutMapping()
-  public ResponseEntity<Object> updateLiquor(@RequestBody LiquorDto newLiquorDto) {
-    LiquorDto liquorDto = liquorService.update(newLiquorDto);
-    return ResponseEntity.ok().build();
+  @PostMapping
+  public ResponseEntity<Object> createLiquor(@RequestBody LiquorDto newLiquorDto) {
+    LiquorDto liquorDto = liquorService.create(newLiquorDto);
+    return ResponseEntity.created(URI.create("/api/v1/liquors/" + liquorDto.getId())).build();
+  }
+
+  @PutMapping("{id}")
+  public ResponseEntity<Object> updateLiquor(
+      @PathVariable("id") int id, @RequestBody LiquorDto newLiquorDto) {
+    liquorService.update(id, newLiquorDto);
+    return ResponseEntity.ok().location(URI.create("/api/v1/liquors/" + id)).build();
+  }
+
+  @PatchMapping("{id}")
+  public ResponseEntity<LiquorDto> partialUpdateLiquor(
+      @PathVariable int id, @RequestBody LiquorDto newLiquorDto) {
+    liquorService.partialUpdate(id, newLiquorDto);
+    return ResponseEntity.ok().location(URI.create("/api/v1/liquors/" + id)).build();
+  }
+
+  @DeleteMapping("{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void deleteLiquorById(@PathVariable("id") int liquorId) {
+    liquorService.deleteById(liquorId);
   }
 }

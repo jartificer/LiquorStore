@@ -6,10 +6,9 @@ import lombok.Setter;
 @Setter
 @Getter
 public class LiquorDto {
-  protected Integer id;
-  protected String name;
-  protected String producer;
-  protected Float abv;
-  protected Integer stock;
-
+  private Integer id;
+  private String name;
+  private String producer;
+  private Float abv;
+  private Integer stock;
 }
