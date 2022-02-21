@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.function.Function;
+
 public class EndUserService implements UserDetailsService {
   private final EndUserRepository userRepository;
 
@@ -21,8 +23,8 @@ public class EndUserService implements UserDetailsService {
         userRepository
             .findById(username)
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    return User.withDefaultPasswordEncoder()
-        .username(endUser.getEmail())
+    return User.withUsername(endUser.getEmail())
+        .passwordEncoder(Function.identity())
         .password(endUser.getPassword())
         .roles("USER")
         .build();
