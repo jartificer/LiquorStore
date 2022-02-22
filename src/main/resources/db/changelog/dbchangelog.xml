@@ -11,5 +11,4 @@
     <include file="classpath:db/changelog/03_role.xml"/>
 
 
-
 </databaseChangeLog>

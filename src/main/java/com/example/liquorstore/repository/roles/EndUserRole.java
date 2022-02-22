@@ -12,12 +12,9 @@ import javax.persistence.Table;
 @Table(name = "user_role")
 @Setter
 @Getter
-
 public class EndUserRole {
 
-    @Id
-    @Column(name="role_name", length=50)
-    private String role;
-
-
+  @Id
+  @Column(name = "role_name", length = 50)
+  private String role;
 }

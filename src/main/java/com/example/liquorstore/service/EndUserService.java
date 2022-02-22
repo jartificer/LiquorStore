@@ -26,7 +26,7 @@ public class EndUserService implements UserDetailsService {
     return User.withUsername(endUser.getEmail())
         .passwordEncoder(Function.identity())
         .password(endUser.getPassword())
-        .roles("USER")
+        .roles(endUser.getEndUserRole().getRole())
         .build();
   }
 }

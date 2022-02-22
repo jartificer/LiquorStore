@@ -18,6 +18,6 @@ public class EndUser {
   private String password;
 
   @ManyToOne
-  @JoinColumn(name="role_name")
-  private EndUserRole role;
+  @JoinColumn(name = "role_name")
+  private EndUserRole endUserRole;
 }

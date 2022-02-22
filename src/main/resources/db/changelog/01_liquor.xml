@@ -2,38 +2,27 @@
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
-http://www.liquibase.org/xml/ns/pro
-http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
-    <changeSet  id="1"  author="Radu M.">
-        <createSequence  cacheSize="371717"
-                         catalogName="cat"
-                         cycle="true"
-                         dataType="int"
-                         incrementBy="1"
-                         maxValue="1000000"
-                         minValue="1"
-                         schemaName="public"
-                         sequenceName="hibernate_sequence"
-                         startValue="1"/>
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <property name="uuid_type" value="uuid" dbms="postgresql"/>
+    <changeSet id="1" author="Radu M.">
+
         <createTable tableName="liquor">
-            <column  name="id"  type="int">
-                <constraints  primaryKey="true"  nullable="false"/>
+            <column name="id" type="${uuid_type}">
+                <constraints nullable="false" unique="true"/>
             </column>
-            <column  name="name"  type="varchar(50)">
-                <constraints  nullable="false"/>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false"/>
             </column>
 
-            <column  name="producer"  type="varchar(50)">
-                <constraints  nullable="false"/>
+            <column name="producer" type="varchar(50)">
+                <constraints nullable="false"/>
             </column>
-            <column  name="abv"  type="float(50)">
-                <constraints  nullable="false"/>
+            <column name="abv" type="float(50)">
+                <constraints nullable="false"/>
             </column>
-            <column  name="stock"  type="int">
-                <constraints  nullable="false"/>
+            <column name="stock" type="int">
+                <constraints nullable="false"/>
             </column>
         </createTable>
 

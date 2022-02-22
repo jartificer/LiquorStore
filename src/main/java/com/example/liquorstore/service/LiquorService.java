@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class LiquorService {
@@ -51,26 +52,26 @@ public class LiquorService {
     return modelMapper.map(savedLiquor, LiquorDto.class);
   }
 
-  public LiquorDto findById(int id) {
+  public LiquorDto findById(UUID id) {
     Liquor liquor = findByIdOrThrow(id);
     return modelMapper.map(liquor, LiquorDto.class);
   }
 
-  public void update(int id, LiquorDto newLiquorDto) {
+  public void update(UUID id, LiquorDto newLiquorDto) {
     newLiquorDto.setId(id);
     Liquor liquor = findByIdOrThrow(id);
     modelMapper.map(newLiquorDto, liquor);
     liquorRepository.save(liquor);
   }
 
-  public void partialUpdate(int id, LiquorDto newLiquorDto) {
+  public void partialUpdate(UUID id, LiquorDto newLiquorDto) {
     newLiquorDto.setId(id);
     Liquor liquor = findByIdOrThrow(id);
     modelMapperSkipNull.map(newLiquorDto, liquor);
     liquorRepository.save(liquor);
   }
 
-  public void deleteById(int id) throws ResourceNotFoundException {
+  public void deleteById(UUID id) throws ResourceNotFoundException {
     try {
       liquorRepository.deleteById(id);
     } catch (EmptyResultDataAccessException e) {
@@ -78,7 +79,7 @@ public class LiquorService {
     }
   }
 
-  private Liquor findByIdOrThrow(int id) {
+  private Liquor findByIdOrThrow(UUID id) {
     return liquorRepository
         .findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("liquor not found"));

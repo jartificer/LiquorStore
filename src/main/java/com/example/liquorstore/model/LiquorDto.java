@@ -3,10 +3,12 @@ package com.example.liquorstore.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Setter
 @Getter
 public class LiquorDto {
-  private Integer id;
+  private UUID id;
   private String name;
   private String producer;
   private Float abv;
