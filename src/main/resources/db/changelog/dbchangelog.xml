@@ -9,6 +9,8 @@
     <include file="classpath:db/changelog/01_liquor.xml"/>
     <include file="classpath:db/changelog/02_user.xml"/>
     <include file="classpath:db/changelog/03_role.xml"/>
+    <include file="classpath:db/changelog/04_creator.xml"/>
+
 
 
 </databaseChangeLog>

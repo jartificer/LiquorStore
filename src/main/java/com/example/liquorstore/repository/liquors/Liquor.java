@@ -1,12 +1,11 @@
 package com.example.liquorstore.repository.liquors;
 
+import com.example.liquorstore.repository.users.EndUser;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -22,4 +21,8 @@ public class Liquor {
   private String producer;
   private Float abv;
   private Integer stock;
+
+  @ManyToOne
+  @JoinColumn(name = "creator")
+  private EndUser liquorCreator;
 }

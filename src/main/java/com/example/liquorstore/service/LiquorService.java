@@ -4,6 +4,8 @@ import com.example.liquorstore.model.LiquorDto;
 import com.example.liquorstore.model.PageDto;
 import com.example.liquorstore.repository.liquors.Liquor;
 import com.example.liquorstore.repository.liquors.LiquorRepository;
+import com.example.liquorstore.repository.users.EndUser;
+import com.example.liquorstore.repository.users.EndUserRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,13 +23,18 @@ import java.util.UUID;
 @Service
 public class LiquorService {
   private final LiquorRepository liquorRepository;
+  private final EndUserRepository endUserRepository;
   private final ModelMapper modelMapper;
   private final ModelMapper modelMapperSkipNull;
 
   @Autowired
   public LiquorService(
-      LiquorRepository liquorRepository, ModelMapper modelMapper, ModelMapper modelMapperSkipNull) {
+      LiquorRepository liquorRepository,
+      EndUserRepository endUserRepository,
+      ModelMapper modelMapper,
+      ModelMapper modelMapperSkipNull) {
     this.liquorRepository = liquorRepository;
+    this.endUserRepository = endUserRepository;
     this.modelMapper = modelMapper;
     this.modelMapperSkipNull = modelMapperSkipNull;
   }
@@ -46,8 +54,17 @@ public class LiquorService {
     return liquorPage;
   }
 
-  public LiquorDto create(LiquorDto liquorDto) {
+  public LiquorDto create(LiquorDto liquorDto, String username) {
+
+    EndUser endUser =
+        endUserRepository
+            .findById(username)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+    //    Liquor newLiquor = new Liquor(liquorDto.getId(), liquorDto.getName(),
+    // liquorDto.getProducer(), liquorDto.getAbv(), liquorDto.getStock(), endUser);
     Liquor newLiquor = modelMapper.map(liquorDto, Liquor.class);
+    newLiquor.setLiquorCreator(endUser);
     Liquor savedLiquor = liquorRepository.save(newLiquor);
     return modelMapper.map(savedLiquor, LiquorDto.class);
   }

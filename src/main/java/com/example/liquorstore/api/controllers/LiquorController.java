@@ -3,6 +3,7 @@ package com.example.liquorstore.api.controllers;
 import com.example.liquorstore.model.LiquorDto;
 import com.example.liquorstore.model.PageDto;
 import com.example.liquorstore.service.LiquorService;
+import com.example.liquorstore.service.UserDetailsProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +18,12 @@ import java.util.UUID;
 public class LiquorController {
 
   private final LiquorService liquorService;
+  private final UserDetailsProvider userDetailsProvider;
 
   @Autowired
-  public LiquorController(LiquorService liquorService) {
+  public LiquorController(LiquorService liquorService, UserDetailsProvider userDetailsProvider) {
     this.liquorService = liquorService;
+    this.userDetailsProvider = userDetailsProvider;
   }
 
   @GetMapping("{id}")
@@ -41,14 +44,17 @@ public class LiquorController {
   @PostMapping
   @PreAuthorize("hasAnyRole('writer','admin')")
   public ResponseEntity<Object> createLiquor(@RequestBody LiquorDto newLiquorDto) {
-    LiquorDto liquorDto = liquorService.create(newLiquorDto);
+
+    String username = userDetailsProvider.getUserDetails().getUsername();
+    LiquorDto liquorDto = liquorService.create(newLiquorDto, username);
+
     return ResponseEntity.created(URI.create("/api/v1/liquors/" + liquorDto.getId())).build();
   }
 
   @PutMapping("{id}")
   @PreAuthorize("hasAnyRole('writer','admin')")
   public ResponseEntity<Object> updateLiquor(
-          @PathVariable("id") UUID id, @RequestBody LiquorDto newLiquorDto) {
+      @PathVariable("id") UUID id, @RequestBody LiquorDto newLiquorDto) {
     liquorService.update(id, newLiquorDto);
     return ResponseEntity.ok().location(URI.create("/api/v1/liquors/" + id)).build();
   }
