@@ -14,6 +14,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -60,9 +63,6 @@ public class LiquorService {
         endUserRepository
             .findById(username)
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
-    //    Liquor newLiquor = new Liquor(liquorDto.getId(), liquorDto.getName(),
-    // liquorDto.getProducer(), liquorDto.getAbv(), liquorDto.getStock(), endUser);
     Liquor newLiquor = modelMapper.map(liquorDto, Liquor.class);
     newLiquor.setLiquorCreator(endUser);
     Liquor savedLiquor = liquorRepository.save(newLiquor);
@@ -74,16 +74,21 @@ public class LiquorService {
     return modelMapper.map(liquor, LiquorDto.class);
   }
 
-  public void update(UUID id, LiquorDto newLiquorDto) {
-    newLiquorDto.setId(id);
+  public void update(UUID id, LiquorDto newLiquorDto, UserDetails userDetails) {
     Liquor liquor = findByIdOrThrow(id);
+    if (!isCreatorOrAdmin(liquor, userDetails)) {
+      throw new AccessDeniedException("You must be the creator of this entry to update it");
+    }
+    newLiquorDto.setId(id);
     modelMapper.map(newLiquorDto, liquor);
     liquorRepository.save(liquor);
   }
 
-  public void partialUpdate(UUID id, LiquorDto newLiquorDto) {
-    newLiquorDto.setId(id);
+  public void partialUpdate(UUID id, LiquorDto newLiquorDto, UserDetails userDetails) {
     Liquor liquor = findByIdOrThrow(id);
+    if (!isCreatorOrAdmin(liquor, userDetails))
+      throw new AccessDeniedException("You must be the creator of this entry to update it");
+    newLiquorDto.setId(id);
     modelMapperSkipNull.map(newLiquorDto, liquor);
     liquorRepository.save(liquor);
   }
@@ -100,5 +105,12 @@ public class LiquorService {
     return liquorRepository
         .findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("liquor not found"));
+  }
+
+  private Boolean isCreatorOrAdmin(Liquor liquor, UserDetails userDetails) {
+    return liquor.getLiquorCreator().getEmail().equals(userDetails.getUsername())
+        || userDetails.getAuthorities().stream()
+            .map(GrantedAuthority::getAuthority)
+            .anyMatch("admin"::equalsIgnoreCase);
   }
 }

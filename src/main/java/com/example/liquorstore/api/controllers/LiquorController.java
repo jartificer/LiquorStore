@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -55,7 +56,8 @@ public class LiquorController {
   @PreAuthorize("hasAnyRole('writer','admin')")
   public ResponseEntity<Object> updateLiquor(
       @PathVariable("id") UUID id, @RequestBody LiquorDto newLiquorDto) {
-    liquorService.update(id, newLiquorDto);
+    UserDetails userDetails = userDetailsProvider.getUserDetails();
+    liquorService.update(id, newLiquorDto, userDetails);
     return ResponseEntity.ok().location(URI.create("/api/v1/liquors/" + id)).build();
   }
 
@@ -63,12 +65,13 @@ public class LiquorController {
   @PreAuthorize("hasAnyRole('writer','admin')")
   public ResponseEntity<LiquorDto> partialUpdateLiquor(
       @PathVariable UUID id, @RequestBody LiquorDto newLiquorDto) {
-    liquorService.partialUpdate(id, newLiquorDto);
+    UserDetails userDetails = userDetailsProvider.getUserDetails();
+    liquorService.partialUpdate(id, newLiquorDto, userDetails);
     return ResponseEntity.ok().location(URI.create("/api/v1/liquors/" + id)).build();
   }
 
   @DeleteMapping("{id}")
-  @PreAuthorize("hasAnyRole('writer','admin')")
+  @PreAuthorize("hasAnyRole('admin')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteLiquorById(@PathVariable("id") UUID liquorId) {
     liquorService.deleteById(liquorId);
