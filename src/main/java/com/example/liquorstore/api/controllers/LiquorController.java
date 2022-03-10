@@ -7,6 +7,7 @@ import com.example.liquorstore.service.UserDetailsProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.UUID;
 
+
 @RestController
+@CrossOrigin()
 @RequestMapping("/api/v1/liquors")
 public class LiquorController {
 
@@ -34,6 +37,7 @@ public class LiquorController {
   }
 
   @GetMapping
+//  @Secured("ROLE_WRITER")
   @PreAuthorize("hasAnyRole('reader','writer','admin')")
   public PageDto<LiquorDto> getAllLiquors(
       @RequestParam(value = "page", defaultValue = "0") Integer page,

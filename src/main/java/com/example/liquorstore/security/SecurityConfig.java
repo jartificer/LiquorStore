@@ -1,58 +1,46 @@
 package com.example.liquorstore.security;
 
 import com.example.liquorstore.repository.users.EndUserRepository;
-import com.example.liquorstore.service.EndUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired private EndUserRepository endUserRepository;
+  @Autowired private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
   protected void configure(HttpSecurity http) throws Exception {
+
     http.authorizeRequests()
-        .antMatchers("/")
+        .antMatchers("/api/v1/login")
         .permitAll()
         .anyRequest()
         .authenticated()
         .and()
-        .formLogin()
-        .defaultSuccessUrl("/swagger-ui/index.html")
-        .permitAll()
-        .and()
-        .logout()
-        .permitAll()
-        .and()
+        .addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
         .cors()
         .disable()
         .csrf()
-        .disable();
-  }
-
-  @Override
-  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-    auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
+        .disable()
+        .exceptionHandling()
+        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+        .and()
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
   }
 
   @Bean
   public BCryptPasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
-  }
-
-  @Bean
-  @Override
-  public UserDetailsService userDetailsService() {
-    return new EndUserService(endUserRepository);
   }
 }
