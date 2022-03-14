@@ -37,8 +37,8 @@ public class LiquorController {
   }
 
   @GetMapping
-//  @Secured("ROLE_WRITER")
-  @PreAuthorize("hasAnyRole('reader','writer','admin')")
+  @Secured("ROLE_WRITER")
+//  @PreAuthorize("hasAnyRole('reader','writer','admin')")
   public PageDto<LiquorDto> getAllLiquors(
       @RequestParam(value = "page", defaultValue = "0") Integer page,
       @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
