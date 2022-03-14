@@ -1,6 +1,7 @@
 package com.example.liquorstore.security;
 
 import com.example.liquorstore.repository.users.EndUserRepository;
+import com.example.liquorstore.service.EndUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired private EndUserRepository endUserRepository;
   @Autowired private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+  @Autowired private EndUserService endUserService;
 
   protected void configure(HttpSecurity http) throws Exception {
 
@@ -27,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .anyRequest()
         .authenticated()
         .and()
-        .addFilterBefore(new JwtRequestFilter(), UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(new JwtRequestFilter(endUserService), UsernamePasswordAuthenticationFilter.class)
         .cors()
         .disable()
         .csrf()

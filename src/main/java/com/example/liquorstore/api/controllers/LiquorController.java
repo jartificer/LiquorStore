@@ -31,13 +31,13 @@ public class LiquorController {
   }
 
   @GetMapping("{id}")
-  @PreAuthorize("hasAnyRole('reader','writer','admin')")
+  @Secured({"ROLE_READER", "ROLE_WRITER", "ROLE_ADMIN"})
   public LiquorDto findLiquorById(@PathVariable("id") UUID liquorId) {
     return liquorService.findById(liquorId);
   }
 
   @GetMapping
-  @Secured("ROLE_WRITER")
+  @Secured({"ROLE_READER", "ROLE_WRITER", "ROLE_ADMIN"})
 //  @PreAuthorize("hasAnyRole('reader','writer','admin')")
   public PageDto<LiquorDto> getAllLiquors(
       @RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -47,7 +47,7 @@ public class LiquorController {
   }
 
   @PostMapping
-  @PreAuthorize("hasAnyRole('writer','admin')")
+  @Secured({"ROLE_WRITER", "ROLE_ADMIN"})
   public ResponseEntity<Object> createLiquor(@RequestBody LiquorDto newLiquorDto) {
 
     String username = userDetailsProvider.getUserDetails().getUsername();
@@ -57,7 +57,7 @@ public class LiquorController {
   }
 
   @PutMapping("{id}")
-  @PreAuthorize("hasAnyRole('writer','admin')")
+  @Secured({"ROLE_WRITER", "ROLE_ADMIN"})
   public ResponseEntity<Object> updateLiquor(
       @PathVariable("id") UUID id, @RequestBody LiquorDto newLiquorDto) {
     UserDetails userDetails = userDetailsProvider.getUserDetails();
@@ -66,7 +66,7 @@ public class LiquorController {
   }
 
   @PatchMapping("{id}")
-  @PreAuthorize("hasAnyRole('writer','admin')")
+  @Secured({"ROLE_WRITER", "ROLE_ADMIN"})
   public ResponseEntity<LiquorDto> partialUpdateLiquor(
       @PathVariable UUID id, @RequestBody LiquorDto newLiquorDto) {
     UserDetails userDetails = userDetailsProvider.getUserDetails();
@@ -75,7 +75,7 @@ public class LiquorController {
   }
 
   @DeleteMapping("{id}")
-  @PreAuthorize("hasAnyRole('admin')")
+  @Secured("ROLE_ADMIN")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteLiquorById(@PathVariable("id") UUID liquorId) {
     liquorService.deleteById(liquorId);

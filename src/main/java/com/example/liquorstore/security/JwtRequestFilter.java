@@ -2,9 +2,12 @@ package com.example.liquorstore.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.liquorstore.service.EndUserService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -20,11 +23,16 @@ import static com.example.liquorstore.security.SecurityConstants.*;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
+  private final EndUserService endUserService;
+
+  public JwtRequestFilter(EndUserService endUserService) {
+    this.endUserService = endUserService;
+  }
 
   @Override
   protected void doFilterInternal(
-          HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-          throws IOException, ServletException {
+      HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+      throws IOException, ServletException {
     String header = request.getHeader(HEADER_STRING);
 
     if (header == null || !header.startsWith(TOKEN_PREFIX)) {
@@ -41,27 +49,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
   private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
     String token = request.getHeader(HEADER_STRING);
 
-    if (token != null) {
-      String user =
-              JWT.require(Algorithm.HMAC256(SECRET))
-                      .build()
-                      .verify(token.replace(TOKEN_PREFIX, ""))
-                      .getSubject();
+    DecodedJWT decodedJwt =
+        JWT.require(Algorithm.HMAC256(SECRET)).build().verify(token.replace(TOKEN_PREFIX, ""));
 
-      String authority = JWT.require(Algorithm.HMAC256(SECRET))
-              .build()
-              .verify(token.replace(TOKEN_PREFIX, ""))
-              .getClaim("role").asString();
+    String user = decodedJwt.getSubject();
+    String authority = decodedJwt.getClaim("role").asString();
 
+    UserDetails userDetails = endUserService.loadUserByUsername(user);
 
-
-      if (user != null) {
-        return new UsernamePasswordAuthenticationToken(user, null, Collections.singleton(new SimpleGrantedAuthority("ROLE_" + authority.toUpperCase())));
-      }
-
+    if (user == null) {
       return null;
     }
-
-    return null;
+    return new UsernamePasswordAuthenticationToken(
+        userDetails,
+        null,
+        Collections.singleton(new SimpleGrantedAuthority("ROLE_" + authority.toUpperCase())));
   }
 }
