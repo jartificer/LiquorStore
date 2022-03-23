@@ -86,8 +86,9 @@ public class LiquorService {
 
   public void partialUpdate(UUID id, LiquorDto newLiquorDto, UserDetails userDetails) {
     Liquor liquor = findByIdOrThrow(id);
-    if (!isCreatorOrAdmin(liquor, userDetails))
+    if (!isCreatorOrAdmin(liquor, userDetails)) {
       throw new AccessDeniedException("You must be the creator of this entry to update it");
+    }
     newLiquorDto.setId(id);
     modelMapperSkipNull.map(newLiquorDto, liquor);
     liquorRepository.save(liquor);
@@ -107,7 +108,7 @@ public class LiquorService {
         .orElseThrow(() -> new ResourceNotFoundException("liquor not found"));
   }
 
-  private Boolean isCreatorOrAdmin(Liquor liquor, UserDetails userDetails) {
+  Boolean isCreatorOrAdmin(Liquor liquor, UserDetails userDetails) {
     return liquor.getLiquorCreator().getEmail().equals(userDetails.getUsername())
         || userDetails.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
